@@ -14,7 +14,7 @@ SpendWise is a responsive personal finance dashboard for reviewing account balan
 
 ## GitHub Repository Information
 
-Repository: **Add your public GitHub repository URL here after pushing the project.**
+Repository: https://github.com/abdallahism48000-cmd/web-development-week7
 
 ## Live Netlify Website URL
 
