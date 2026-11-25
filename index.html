@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SpendWise personal finance dashboard">
+  <title>SpendWise — Your money, clearly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="SpendWise home">
+      <span class="brand-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10H12V2Z"/><path d="M14 2.2V10h7.8A10 10 0 0 0 14 2.2Z"/></svg></span>
+      <span>SpendWise</span>
+    </a>
+
+    <nav class="nav" aria-label="Main navigation">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⌂</span>Overview</button>
+      <button class="nav-item" data-view="transactions"><span class="nav-icon">⇄</span>Transactions</button>
+      <button class="nav-item" data-view="budgets"><span class="nav-icon">◫</span>Budgets</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="nav-item"><span class="nav-icon">⚙</span>Settings</button>
+      <div class="profile">
+        <div class="avatar">AM</div>
+        <div><strong>Alex Morgan</strong><small>alex@example.com</small></div>
+        <button class="more" aria-label="Profile menu">•••</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">November 2026</p>
+        <h1 id="page-title">Good morning, Alex</h1>
+      </div>
+      <div class="actions">
+        <button class="icon-button" aria-label="Notifications"><span class="notification-dot"></span>♢</button>
+        <button class="primary-button" id="open-modal"><span>＋</span> Add transaction</button>
+      </div>
+    </header>
+
+    <section class="dashboard" id="dashboard-view">
+      <div class="summary-grid">
+        <article class="card balance-card">
+          <div class="card-heading"><span>Total balance</span><button aria-label="More balance options">•••</button></div>
+          <div class="balance">$<span id="total-balance">12,850</span><small>.60</small></div>
+          <div class="trend positive">↗ 8.4% <span>from last month</span></div>
+        </article>
+
+        <article class="card summary-card">
+          <div class="summary-icon income">↓</div>
+          <div><span>Income</span><strong id="income-total">$6,240.00</strong></div>
+          <div class="mini-trend positive">+12.5%</div>
+        </article>
+
+        <article class="card summary-card">
+          <div class="summary-icon expense">↑</div>
+          <div><span>Expenses</span><strong id="expense-total">$3,812.40</strong></div>
+          <div class="mini-trend negative">-4.2%</div>
+        </article>
+
+        <article class="card summary-card">
+          <div class="summary-icon savings">◇</div>
+          <div><span>Savings</span><strong>$2,427.60</strong></div>
+          <div class="mini-trend positive">+18.1%</div>
+        </article>
+      </div>
+
+      <div class="content-grid">
+        <article class="card chart-card">
+          <div class="card-heading"><div><span>Cash flow</span><small>Monthly overview</small></div><select id="chart-period" aria-label="Chart period"><option>This year</option><option>Last year</option></select></div>
+          <div class="chart-wrap">
+            <div class="chart-labels"><span>$8k</span><span>$6k</span><span>$4k</span><span>$2k</span><span>$0</span></div>
+            <div class="chart" id="cash-chart" aria-label="Cash flow bar chart"></div>
+          </div>
+          <div class="chart-legend"><span><i class="income-key"></i>Income</span><span><i class="expense-key"></i>Expenses</span></div>
+        </article>
+
+        <article class="card budget-card">
+          <div class="card-heading"><div><span>Monthly budget</span><small>November</small></div><button aria-label="More budget options">•••</button></div>
+          <div class="budget-ring" id="budget-ring" style="--progress:68"><div><strong id="budget-percent">68%</strong><small>spent</small></div></div>
+          <div class="budget-details"><div><span>Spent</span><strong id="budget-spent">$3,812</strong></div><div><span>Remaining</span><strong>$1,788</strong></div></div>
+        </article>
+      </div>
+
+      <article class="card transactions-card">
+        <div class="card-heading"><div><span>Recent transactions</span><small>Your latest activity</small></div><button class="text-button" id="view-all">View all <b>→</b></button></div>
+        <div class="transaction-list" id="transaction-list"></div>
+      </article>
+    </section>
+
+    <section class="dashboard hidden" id="transactions-view">
+      <article class="card full-card"><div class="card-heading"><div><span>All transactions</span><small>Income and expenses</small></div></div><div class="transaction-list" id="all-transactions"></div></article>
+    </section>
+
+    <section class="dashboard hidden" id="budgets-view">
+      <article class="card full-card"><div class="card-heading"><div><span>Budget categories</span><small>November spending limits</small></div></div><div id="budget-categories" class="budget-categories"></div></article>
+    </section>
+  </main>
+
+  <dialog id="transaction-modal">
+    <form method="dialog" id="transaction-form">
+      <div class="modal-heading"><div><p class="eyebrow">NEW ENTRY</p><h2>Add transaction</h2></div><button type="button" class="close-button" id="close-modal">×</button></div>
+      <label>Name<input id="transaction-name" required placeholder="e.g. Grocery store"></label>
+      <div class="form-row"><label>Amount<input id="transaction-amount" required type="number" min="0.01" step="0.01" placeholder="0.00"></label><label>Type<select id="transaction-type"><option value="expense">Expense</option><option value="income">Income</option></select></label></div>
+      <label>Category<select id="transaction-category"><option>Food</option><option>Transport</option><option>Shopping</option><option>Home</option><option>Salary</option><option>Entertainment</option></select></label>
+      <button class="primary-button modal-submit" type="submit">Save transaction</button>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status">Transaction added successfully</div>
+  <script src="app.js"></script>
+</body>
+</html>
